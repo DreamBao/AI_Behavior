@@ -20,8 +20,7 @@ namespace AIBehavior.BaseNode
 
         public BNodeStatus ExecuteBTree()
         {
-            return startNode.OnExcecute();
+            return startNode.OnExecute();
         }
-
     }
 }

@@ -56,7 +56,7 @@ namespace AIBehavior.BaseNode
         }
         #endregion
 
-        public virtual BNodeStatus OnExcecute()
+        public virtual BNodeStatus OnExecute()
         {
             return BNodeStatus.Inactive;
         }

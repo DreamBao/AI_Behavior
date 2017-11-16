@@ -8,8 +8,6 @@ namespace AIBehavior.BaseNode
     {
         protected List<BNode> cBNodes; //children
 
-        protected BNode currentBNode;
-
         protected BParentNode()
         {
 
@@ -32,8 +30,12 @@ namespace AIBehavior.BaseNode
 
         public virtual bool CanExecute() { return true; }
 
-        public virtual int GetCurrentChildIndex() { return currentBNode.ID; }
+        protected virtual BNodeStatus DoChildExecute()
+        {
+            return BNodeStatus.Inactive;
+        }
 
-        
+        public virtual int GetCurrentChildIndex() { return -1; }
+
     }
 }

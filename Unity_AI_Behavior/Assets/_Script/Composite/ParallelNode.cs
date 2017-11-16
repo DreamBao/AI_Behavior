@@ -5,7 +5,6 @@ namespace AIBehavior.BaseNode
 {
     public class ParallelNode : Composite
     {
-
         private int curChildIndex = 0;
         private BNodeStatus nodeStatus = BNodeStatus.Inactive;
 
@@ -37,7 +36,6 @@ namespace AIBehavior.BaseNode
                         executeStatus = BNodeStatus.Failure;
                 }
             }
-
             return executeStatus;
         }
 
@@ -48,6 +46,9 @@ namespace AIBehavior.BaseNode
             return status;
         }
 
-        // public override 
+
+
+
+        //public override 
     }
 }

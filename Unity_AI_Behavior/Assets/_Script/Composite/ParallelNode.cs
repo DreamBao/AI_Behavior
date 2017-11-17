@@ -41,14 +41,10 @@ namespace AIBehavior.BaseNode
 
         protected override BNodeStatus DoChildExecute()
         {
-            BNodeStatus status = cBNodes[curChildIndex].OnExecute();
+            BNodeStatus status = cBNodes[curChildIndex].ProcessLiftCycle();
             curChildIndex++;
             return status;
         }
-
-
-
-
         //public override 
     }
 }

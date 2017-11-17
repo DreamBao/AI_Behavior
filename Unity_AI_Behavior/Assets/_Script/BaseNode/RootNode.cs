@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace AIBehavior.BaseNode
 {
-    public class RootNode : MonoBehaviour
+    public class RootNode
     {
         protected BNode startNode;
 
-        protected RootNode()
+        public RootNode()
         {
 
         }
@@ -20,7 +20,7 @@ namespace AIBehavior.BaseNode
 
         public BNodeStatus ExecuteBTree()
         {
-            return startNode.OnExecute();
+            return startNode.ProcessLiftCycle();
         }
     }
 }

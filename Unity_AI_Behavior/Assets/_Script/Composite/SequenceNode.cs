@@ -12,6 +12,7 @@ namespace AIBehavior.BaseNode
         public override void OnStart()
         {
             base.OnStart();
+            Debug.Log("sequence node start");
             curChildIndex = 0;
         }
 
@@ -30,7 +31,7 @@ namespace AIBehavior.BaseNode
 
         protected override BNodeStatus DoChildExecute()
         {
-            BNodeStatus status = cBNodes[curChildIndex].OnExecute();
+            BNodeStatus status = cBNodes[curChildIndex].ProcessLiftCycle();
             curChildIndex++;
             return status;
         }

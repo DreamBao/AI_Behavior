@@ -23,7 +23,6 @@ namespace AIBehavior.BaseNode
 
         public override BNodeStatus OnExecute()
         {
-
             float time = 0;
             if (repeatCount < 0 && repeatCount != -1)
                 return BNodeStatus.Failure;
@@ -36,22 +35,20 @@ namespace AIBehavior.BaseNode
                     time = 0;
                     if (repeatCount == -1)
                     {
-
+                        Debug.Log("repeat forever");
                     }
                     else
                     {
-                        curCount++;
+                        DoChildExecute();
                         if(curCount == repeatCount)
                             break;
+                        curCount++;
                     }
                     DoChildExecute();
                 }
-
             }
             return BNodeStatus.Success;
         }
-
-        
 
         protected override BNodeStatus DoChildExecute()
         {

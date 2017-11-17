@@ -13,6 +13,7 @@ public class Idle : Action{
 
     public override BNodeStatus OnExecute()
     {
+        Debug.Log("OnExecute Idle");
         return BNodeStatus.Active;
     }
 }

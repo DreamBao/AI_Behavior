@@ -10,7 +10,7 @@ namespace AIBehavior.BaseNode
 
         protected BParentNode()
         {
-
+            cBNodes = new List<BNode>();
         }
 
         public void AddChildNode(BNode child)
@@ -36,6 +36,5 @@ namespace AIBehavior.BaseNode
         }
 
         public virtual int GetCurrentChildIndex() { return -1; }
-
     }
 }

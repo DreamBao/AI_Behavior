@@ -24,7 +24,6 @@ namespace AIBehavior.BaseNode
 
         }
 
-
         public virtual void OnUpdate()
         {
 
@@ -42,7 +41,7 @@ namespace AIBehavior.BaseNode
 
         public virtual void OnRestart()
         {
-
+            ProcessLiftCycle();
         }
 
         public virtual void OnComplete()
@@ -56,11 +55,23 @@ namespace AIBehavior.BaseNode
         }
         #endregion
 
+        public virtual BNodeStatus ProcessLiftCycle()
+        {
+            OnStart();
+            OnUpdate();
+            OnLateUpdate();
+            BNodeStatus status = OnExecute();
+            OnComplete();
+            OnEnd();
+            return status;
+        }
+
         public virtual BNodeStatus OnExecute()
         {
             return BNodeStatus.Inactive;
         }
 
+       
         public virtual void OnPause()
         {
 

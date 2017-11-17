@@ -97,6 +97,7 @@
     <Compile Include="Assets\_Script\Composite\SelectorNode.cs" />
     <Compile Include="Assets\_Script\Composite\SequenceNode.cs" />
     <Compile Include="Assets\_Script\Decorators\Repeater.cs" />
+    <Compile Include="Assets\_Script\EditorWindow\AIBehaviorEditor.cs" />
     <Compile Include="Assets\_Script\TestAITree.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

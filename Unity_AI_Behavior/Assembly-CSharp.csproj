@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\_Script\AIBaseBehavior.cs" />
      <Compile Include="Assets\_Script\Action\Idle.cs" />
      <Compile Include="Assets\_Script\BaseNode\Action.cs" />
      <Compile Include="Assets\_Script\BaseNode\BNode.cs" />
@@ -57,7 +58,10 @@
      <Compile Include="Assets\_Script\Composite\ParallelNode.cs" />
      <Compile Include="Assets\_Script\Composite\SelectorNode.cs" />
      <Compile Include="Assets\_Script\Composite\SequenceNode.cs" />
+     <Compile Include="Assets\_Script\Constant.cs" />
      <Compile Include="Assets\_Script\Decorators\Repeater.cs" />
+     <Compile Include="Assets\_Script\EditorWindow\AIBehaviorEditor.cs" />
+     <Compile Include="Assets\_Script\TestAITree.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>H:/Unity5.6.0/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

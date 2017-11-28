@@ -11,6 +11,19 @@ public class AIBehaviorEditor : EditorWindow {
 
     private Vector2 mScrollPos = new Vector2(0, 0);
 
+    int windowCount = 2;
+
+
+    //Composite
+    string Paralle_Node = "ParallelNode";
+    string Selector_Node = "SelectorNode";
+    string Sequence_Node = "SequenceNode";
+
+
+    bool s1 = false;
+    bool s2 = false;
+    bool s3 = false;
+
     [@MenuItem("AI/AIEditor")]
     static void InitEditor()
     {
@@ -18,7 +31,6 @@ public class AIBehaviorEditor : EditorWindow {
         AIBehaviorEditor editor = (AIBehaviorEditor)AIBehaviorEditor.GetWindow(typeof(AIBehaviorEditor));
         
         Instance = editor;
-        
     }
 
 
@@ -28,48 +40,77 @@ public class AIBehaviorEditor : EditorWindow {
     }
 
     public Rect windowRect0 = new Rect(20, 20, 120, 50);
-
+    public Rect windowRect = new Rect(100, 100, 200, 200);
+    public Rect windowRect2 = new Rect(100, 100, 200, 200);
+    public Rect windowRect3 = new Rect(100, 100, 200, 200);
     void OnGUI()
     {
         //----------------------------- MainView -----------------------
         mScrollPos = GUI.BeginScrollView(new Rect(0, 0, position.width - 240, position.height), this.mScrollPos, new Rect(0, 0, this.maxSize.x, this.maxSize.y));
+        BeginWindows();
+
+        //GUI.Window(1, new Rect(0, 100, 100, 100), DoMyWindow, "mywindow");
+        UpdateNodeGUI();
+
+        EndWindows();
         //GUI.Box(new Rect(0, 0, 100, 100), button);
         //GUI.Box(new Rect(100, 0, 100, 100), "test");
-        //GUI.Window(0, new Rect(0, 100, 100, 100), MyWindow, "mywindow");
-        
         GUI.EndScrollView();
         //-----------------------------End MainView --------------------
         //-----------------------------Editor Button -------------------
         GUI.BeginGroup(new Rect(position.width - GUI_WIDTH, 0, 300, 1000));
         int x = 0;
         int y = 0;
-        
-        for (int i = 0; i < 5; i ++)
+
+
+
+        if (GUI.Button(new Rect(x, y, 240, 20), Paralle_Node))
         {
-            if (GUI.Button(new Rect(x, y, 240, 20), "Load"))
-            {
-            }
-            y += 20;
+            s1 = true;
         }
-        
+        y += 20;
+        if (GUI.Button(new Rect(x, y, 240, 20), Selector_Node))
+        {
+            s2 = true;
+        }
+        y += 20;
+        if (GUI.Button(new Rect(x, y, 240, 20), Sequence_Node))
+        {
+            s3 = true;
+        }
+        y += 20;
 
         GUI.EndGroup();
         //windowRect0 = GUI.Window(0, new Rect(0, 1200, 120, 50), DoMyWindow, "My Window");
     }
-    void DoMyWindow(int windowID)
-    {
-        if (GUI.Button(new Rect(10, 20, 100, 20), "Hello World"))
-            Debug.Log("Got a click in window " + windowID);
 
-        GUI.DragWindow(new Rect(0, 0, 10000, 10000));
+    void DoMyWindow1(int windowID)
+    {
+        GUILayout.Button("Hi");
+        GUI.DragWindow();
+    }
+    void DoMyWindow2(int windowID)
+    {
+        GUILayout.Button("Hi");
+        GUI.DragWindow();
     }
 
-    void Update()
+    void DoMyWindow3(int windowID)
     {
-        //Instance = this;
-        //if (select != null)
-        //{
-        //    Repaint();
-        //}
+        GUILayout.Button("Hi");
+        GUI.DragWindow();
     }
+
+    void UpdateNodeGUI()
+    {   for(int i = 0; i < 3; i++)
+        {
+            if (i == 0 && s1)
+                windowRect = GUI.Window(i, windowRect, DoMyWindow1, Paralle_Node);
+            if (i == 1 && s2)
+                windowRect2 = GUI.Window(i, windowRect2, DoMyWindow2, Selector_Node);
+            if (i == 2 && s3)
+                windowRect3 = GUI.Window(i, windowRect3, DoMyWindow3, Sequence_Node);
+        }
+    }
+ 
 }

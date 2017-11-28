@@ -93,6 +93,7 @@
     <Compile Include="Assets\_Script\BaseNode\Composite.cs" />
     <Compile Include="Assets\_Script\BaseNode\Decorator.cs" />
     <Compile Include="Assets\_Script\BaseNode\RootNode.cs" />
+    <Compile Include="Assets\_Script\Common\Constant.cs" />
     <Compile Include="Assets\_Script\Composite\ParallelNode.cs" />
     <Compile Include="Assets\_Script\Composite\SelectorNode.cs" />
     <Compile Include="Assets\_Script\Composite\SequenceNode.cs" />

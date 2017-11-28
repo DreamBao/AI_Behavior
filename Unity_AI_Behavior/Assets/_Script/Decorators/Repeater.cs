@@ -55,7 +55,5 @@ namespace AIBehavior.BaseNode
             //now repeater only support one child
             return cBNodes[0].OnExecute();
         }
-
-
     }
 }

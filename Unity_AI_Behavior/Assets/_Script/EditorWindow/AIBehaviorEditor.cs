@@ -28,8 +28,9 @@ public class AIBehaviorEditor : EditorWindow {
     static void InitEditor()
     {
         InitBinding();
+        LoadConfigData();
         AIBehaviorEditor editor = (AIBehaviorEditor)AIBehaviorEditor.GetWindow(typeof(AIBehaviorEditor));
-        
+
         Instance = editor;
     }
 
@@ -37,6 +38,11 @@ public class AIBehaviorEditor : EditorWindow {
     static void InitBinding()
     {
         button = Resources.Load<Texture>(Constant.TEXTURE_PATH + "Button");
+    }
+
+    static void LoadConfigData()
+    {
+        BaseConfig.LoadData("Config/BaseConfig");
     }
 
     public Rect windowRect0 = new Rect(20, 20, 120, 50);
@@ -89,6 +95,7 @@ public class AIBehaviorEditor : EditorWindow {
         GUILayout.Button("Hi");
         GUI.DragWindow();
     }
+
     void DoMyWindow2(int windowID)
     {
         GUILayout.Button("Hi");

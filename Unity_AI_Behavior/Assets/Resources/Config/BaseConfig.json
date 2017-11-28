@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1001,
+    "NodeName": "ParallelNode"
+  },
+  {
+    "id": 1002,
+    "NodeName": "SelectorNode"
+  },
+  {
+    "id": 1003,
+    "NodeName": "SequenceNode"
+  }
+]

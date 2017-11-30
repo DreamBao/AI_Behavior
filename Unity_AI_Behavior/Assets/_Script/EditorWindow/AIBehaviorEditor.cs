@@ -18,18 +18,25 @@ public class EditorNodeInfo
     public EditorNodeInfo next;
 }
 
+public class ExternAISource : ScriptableObject
+{
+    public List<EditorNodeInfo> editorNode;
+
+    public void SetSourceNode(List<EditorNodeInfo> sourceNode)
+    {
+        editorNode = sourceNode;
+    }
+}
+
 
 public class AIBehaviorEditor : EditorWindow {
 
-    public static AIBehaviorEditor Instance;
     public static int GUI_WIDTH = 240;
-
 
     public static Texture button;
 
     private Vector2 mScrollPos = new Vector2(0, 0);
 
-    int windowCount = 2;
     private Vector2 mousePos;
 
     static Dictionary<uint, BaseConfig> baseConfigDic;
@@ -44,16 +51,32 @@ public class AIBehaviorEditor : EditorWindow {
     bool IsClickedOnNode = false;
 
     [@MenuItem("AI/AIEditor")]
-    static void InitEditor()
+    public AIBehaviorEditor InitEditor(List<EditorNodeInfo> sourceNode = null)
     {
+        
         InitBinding();
         LoadConfigData();
+        //ExternAISource source = AssetDatabase.LoadAssetAtPath<ScriptableObject>("Assets/ExternAIStruct/AI.asset");
+        //Debug.Log("source : " + source.editorNode.Count);
+        if (sourceNode != null)
+            LoadNodeData(sourceNode);
         AIBehaviorEditor editor = (AIBehaviorEditor)AIBehaviorEditor.GetWindow(typeof(AIBehaviorEditor));
-
-        Instance = editor;
+        return editor;
     }
 
-    static void InitBinding()
+    public AIBehaviorEditor OpenEditor(List<EditorNodeInfo> sourceNode = null)
+    {
+
+        ExternAISource source = AssetDatabase.LoadAssetAtPath("Assets/ExternAIStruct/AI.asset", typeof(ExternAISource)) as ExternAISource;
+        sourceNode = source.editorNode;
+        
+        AIBehaviorEditor editor = (AIBehaviorEditor)AIBehaviorEditor.GetWindow(typeof(AIBehaviorEditor));
+        if (sourceNode != null)
+            LoadNodeData(sourceNode);
+        return editor;
+    }
+
+    void InitBinding()
     {
         button = Resources.Load<Texture>(Constant.TEXTURE_PATH + "Button");
     }
@@ -61,6 +84,11 @@ public class AIBehaviorEditor : EditorWindow {
     static void LoadConfigData()
     {
         baseConfigDic = BaseConfig.LoadData("Config/BaseConfig");
+    }
+
+    void LoadNodeData(List<EditorNodeInfo> externNode)
+    {
+        editorNode.AddRange(externNode);
     }
 
     void OnGUI()
@@ -124,6 +152,25 @@ public class AIBehaviorEditor : EditorWindow {
                 }
                 y += 20;
             }
+
+        if (GUI.Button(new Rect(x, y, 240, 20), "Export Extern AI"))
+        {
+            string selectPath = "ExternAIStruct/";
+            string path = EditorUtility.SaveFilePanel("Save Test", selectPath, "Test", "asset");
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.Log("Save Cancel");
+                return;
+            }
+
+            path = path.Substring(Application.dataPath.Length - 6);
+            Debug.Log("CreateAinationPath=" + path);
+            ExternAISource source = ScriptableObject.CreateInstance<ExternAISource>();
+            source.SetSourceNode(editorNode);
+            AssetDatabase.CreateAsset(source, path);
+        }
+        y += 20;
+
         GUI.EndGroup();
     }
 

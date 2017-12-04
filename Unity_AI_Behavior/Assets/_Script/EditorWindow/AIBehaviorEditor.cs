@@ -9,24 +9,7 @@ public enum MenuType
     Line
 }
 
-public class EditorNodeInfo
-{
-    public uint ID;
-    public string NodeName;
-    public string Descript;
-    public Rect windowRect = new Rect(100, 100, 200, 200);
-    public EditorNodeInfo next;
-}
 
-public class ExternAISource : ScriptableObject
-{
-    public List<EditorNodeInfo> editorNode;
-
-    public void SetSourceNode(List<EditorNodeInfo> sourceNode)
-    {
-        editorNode = sourceNode;
-    }
-}
 
 
 public class AIBehaviorEditor : EditorWindow {
@@ -46,20 +29,29 @@ public class AIBehaviorEditor : EditorWindow {
     EditorNodeInfo CurSelectNode;
     EditorNodeInfo PreDrawNode;
 
+    private AIBaseBehavior Owner;
+
     //on-off
     bool DrawLineMode = false;
     bool IsClickedOnNode = false;
 
     [@MenuItem("AI/AIEditor")]
-    public AIBehaviorEditor InitEditor(List<EditorNodeInfo> sourceNode = null)
+    public  AIBehaviorEditor InitEditor(AIBaseBehavior behavior = null)
     {
         
         InitBinding();
         LoadConfigData();
-        //ExternAISource source = AssetDatabase.LoadAssetAtPath<ScriptableObject>("Assets/ExternAIStruct/AI.asset");
-        //Debug.Log("source : " + source.editorNode.Count);
-        if (sourceNode != null)
-            LoadNodeData(sourceNode);
+        Owner = behavior;
+        ExternAISource source = null;
+        if (behavior != null)
+            source = behavior.source;
+            //AssetDatabase.LoadAssetAtPath<ExternAISource>("Assets/ExternAIStruct/AI.asset");
+        if (source != null)
+        {
+            Debug.Log("Count : " + source.editorNode.Count);
+            LoadNodeData(source.editorNode);
+        }
+            
         AIBehaviorEditor editor = (AIBehaviorEditor)AIBehaviorEditor.GetWindow(typeof(AIBehaviorEditor));
         return editor;
     }
@@ -67,18 +59,18 @@ public class AIBehaviorEditor : EditorWindow {
     public AIBehaviorEditor OpenEditor(List<EditorNodeInfo> sourceNode = null)
     {
 
-        ExternAISource source = AssetDatabase.LoadAssetAtPath("Assets/ExternAIStruct/AI.asset", typeof(ExternAISource)) as ExternAISource;
-        sourceNode = source.editorNode;
+        //ExternAISource source = AssetDatabase.LoadAssetAtPath("Assets/ExternAIStruct/AI.asset", typeof(ExternAISource)) as ExternAISource;
+        //sourceNode = source.editorNode;
         
         AIBehaviorEditor editor = (AIBehaviorEditor)AIBehaviorEditor.GetWindow(typeof(AIBehaviorEditor));
-        if (sourceNode != null)
-            LoadNodeData(sourceNode);
+        //if (sourceNode != null)
+        //    LoadNodeData(sourceNode);
         return editor;
     }
 
     void InitBinding()
     {
-        button = Resources.Load<Texture>(Constant.TEXTURE_PATH + "Button");
+        //button = Resources.Load<Texture>(Constant.TEXTURE_PATH + "Button");
     }
 
     static void LoadConfigData()
@@ -149,9 +141,11 @@ public class AIBehaviorEditor : EditorWindow {
                     eni.NodeName = config.Value.nodeName;
                     eni.Descript = config.Value.nodeName;
                     editorNode.Add(eni);
+                    Owner.source.editorNode = new List<EditorNodeInfo>(editorNode);
                 }
                 y += 20;
             }
+
 
         if (GUI.Button(new Rect(x, y, 240, 20), "Export Extern AI"))
         {
@@ -163,11 +157,13 @@ public class AIBehaviorEditor : EditorWindow {
                 return;
             }
 
-            path = path.Substring(Application.dataPath.Length - 6);
-            Debug.Log("CreateAinationPath=" + path);
-            ExternAISource source = ScriptableObject.CreateInstance<ExternAISource>();
-            source.SetSourceNode(editorNode);
-            AssetDatabase.CreateAsset(source, path);
+            //path = path.Substring(Application.dataPath.Length - 6);
+            //Debug.Log("CreateAinationPath=" + path);
+            //ExternAISource source = ScriptableObject.CreateInstance<ExternAISource>();
+            //source.editorNode.AddRange(editorNode);
+            //Debug.Log("source Node=" + source.editorNode.Count);
+            //AssetDatabase.CreateAsset(source, path);
+            //AssetDatabase.ImportAsset(path);
         }
         y += 20;
 

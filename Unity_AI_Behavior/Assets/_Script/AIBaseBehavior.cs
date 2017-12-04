@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using AIBehavior.BaseNode;
 
-public class exTest : ScriptableObject
-{
-    [HideInInspector]
-    public string text;
-    public int num;
-}
-
 public class AIBaseBehavior : MonoBehaviour {
 
     public string BehaviorName = "";
@@ -20,10 +13,15 @@ public class AIBaseBehavior : MonoBehaviour {
 
     public AIBehaviorEditor AIEditor;
 
+    [HideInInspector]
+    [SerializeField]
+    public ExternAISource source;
+
     // Use this for initialization
     public void Start () {
 		
 	}
+
 
     public BNodeStatus OnAIStart()
     {
@@ -34,16 +32,24 @@ public class AIBaseBehavior : MonoBehaviour {
     void OpenAIEditor()
     {
         Debug.Log("Open Editor");
-        
-        if(AIEditor == null)
+        if (source == null)
         {
-            AIEditor = new AIBehaviorEditor();
-            AIEditor = AIEditor.InitEditor();
+            Debug.Log("source is null");
+            source = new ExternAISource();
         }
         else
-        {
-            AIEditor = AIEditor.OpenEditor();
-        }
+            Debug.Log("source is not null");
+
+        AIEditor = new AIBehaviorEditor();
+        AIEditor = AIEditor.InitEditor(this);
+        //if (AIEditor == null)
+        //{
+
+        //}
+        //else
+        //{
+        //    AIEditor = AIEditor.InitEditor(this);
+        //}
 
         Dictionary<string, object> dic = new Dictionary<string, object>();
         Dictionary<string, object> dic2 = new Dictionary<string, object>();

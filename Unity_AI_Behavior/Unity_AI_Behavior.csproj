@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Script\AIBaseBehavior.cs" />
+    <Compile Include="Assets\_Script\AISource.cs" />
     <Compile Include="Assets\_Script\Action\Idle.cs" />
     <Compile Include="Assets\_Script\BaseNode\Action.cs" />
     <Compile Include="Assets\_Script\BaseNode\BNode.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Assets\_Script\Composite\SequenceNode.cs" />
     <Compile Include="Assets\_Script\Decorators\Repeater.cs" />
     <Compile Include="Assets\_Script\EditorWindow\AIBehaviorEditor.cs" />
+    <Compile Include="Assets\_Script\Extern\ExternAISource.cs" />
     <Compile Include="Assets\_Script\TestAITree.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

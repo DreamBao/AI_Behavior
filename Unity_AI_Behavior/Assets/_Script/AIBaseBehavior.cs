@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AIBehavior.BaseNode;
+using System.Reflection;
 
 public class AIBaseBehavior : MonoBehaviour {
 
@@ -17,9 +18,13 @@ public class AIBaseBehavior : MonoBehaviour {
     [SerializeField]
     public ExternAISource source;
 
+    [SerializeField]
+    public AISource aiSource;
+
     // Use this for initialization
     public void Start () {
-		
+        if (root != null)
+            OnAIStart();
 	}
 
 
@@ -42,14 +47,6 @@ public class AIBaseBehavior : MonoBehaviour {
 
         AIEditor = new AIBehaviorEditor();
         AIEditor = AIEditor.InitEditor(this);
-        //if (AIEditor == null)
-        //{
-
-        //}
-        //else
-        //{
-        //    AIEditor = AIEditor.InitEditor(this);
-        //}
 
         Dictionary<string, object> dic = new Dictionary<string, object>();
         Dictionary<string, object> dic2 = new Dictionary<string, object>();

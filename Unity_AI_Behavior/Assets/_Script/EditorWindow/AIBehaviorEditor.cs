@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
+using AIBehavior.BaseNode;
+using System.Reflection;
 
 public enum MenuType
 {
@@ -9,8 +10,23 @@ public enum MenuType
     Line
 }
 
+[System.Serializable]
+public class EditorNodeInfo
+{
+    [SerializeField]
+    public uint ID;
+    [SerializeField]
+    public string NodeName;
+    [SerializeField]
+    public string Descript;
+    [SerializeField]
+    public Rect windowRect = new Rect(100, 100, 200, 200);
+    [SerializeField]
+    public List<EditorNodeInfo> childNodes = new List<EditorNodeInfo>();
 
+    public BNode node;
 
+}
 
 public class AIBehaviorEditor : EditorWindow {
 
@@ -38,7 +54,6 @@ public class AIBehaviorEditor : EditorWindow {
     [@MenuItem("AI/AIEditor")]
     public  AIBehaviorEditor InitEditor(AIBaseBehavior behavior = null)
     {
-        
         InitBinding();
         LoadConfigData();
         Owner = behavior;
@@ -58,10 +73,8 @@ public class AIBehaviorEditor : EditorWindow {
 
     public AIBehaviorEditor OpenEditor(List<EditorNodeInfo> sourceNode = null)
     {
-
         //ExternAISource source = AssetDatabase.LoadAssetAtPath("Assets/ExternAIStruct/AI.asset", typeof(ExternAISource)) as ExternAISource;
         //sourceNode = source.editorNode;
-        
         AIBehaviorEditor editor = (AIBehaviorEditor)AIBehaviorEditor.GetWindow(typeof(AIBehaviorEditor));
         //if (sourceNode != null)
         //    LoadNodeData(sourceNode);
@@ -99,14 +112,14 @@ public class AIBehaviorEditor : EditorWindow {
 
             if(IsClickedOnNode && PreDrawNode != null)
             {
-                PreDrawNode.next = CurSelectNode;
+                if(!PreDrawNode.childNodes.Contains(CurSelectNode))
+                    PreDrawNode.childNodes.Add(CurSelectNode);
             }
 
             DrawLineMode = false;
             CurSelectNode = null;
             PreDrawNode = null;
         }
-        
 
         //----------------------------- MainView -----------------------
         mScrollPos = GUI.BeginScrollView(new Rect(0, 0, position.width - 240, position.height), this.mScrollPos, new Rect(0, 0, this.maxSize.x, this.maxSize.y));
@@ -140,6 +153,9 @@ public class AIBehaviorEditor : EditorWindow {
                     eni.ID = config.Value.ID;
                     eni.NodeName = config.Value.nodeName;
                     eni.Descript = config.Value.nodeName;
+                    Assembly assembly = Assembly.GetExecutingAssembly();
+                    Debug.Log("ADD : " + eni.NodeName);
+                    eni.node = assembly.CreateInstance(Constant.Name_SPACE + eni.NodeName) as BNode;
                     editorNode.Add(eni);
                     Owner.source.editorNode = new List<EditorNodeInfo>(editorNode);
                 }
@@ -180,10 +196,11 @@ public class AIBehaviorEditor : EditorWindow {
     {
         for (int i = 0; i < editorNode.Count; i++)
         {
-            editorNode[i].windowRect = GUI.Window(i, editorNode[i].windowRect, DoMyWindow, editorNode[i].NodeName);
-            if(editorNode[i].next != null)
+            EditorNodeInfo eNode = editorNode[i];
+            eNode.windowRect = GUI.Window(i, editorNode[i].windowRect, DoMyWindow, editorNode[i].NodeName);
+            for(int j = 0; j < eNode.childNodes.Count; j ++)
             {
-                DrawBezier(editorNode[i].windowRect, editorNode[i].next.windowRect);
+                DrawBezier(eNode.windowRect, eNode.childNodes[j].windowRect);
             }
         }
     }
@@ -202,7 +219,6 @@ public class AIBehaviorEditor : EditorWindow {
         {
             Handles.DrawBezier(startPos, endPos, startTan, endTan, shadow, null, 1 + (i * 2));
         }
-
         Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 1);
     }
 
@@ -213,7 +229,8 @@ public class AIBehaviorEditor : EditorWindow {
         if (IsClickedOnNode)
         {
             menu.AddItem(new GUIContent("Delete Node"), false, MenuCallback, MenuType.Delete);
-            menu.AddItem(new GUIContent("Draw Line"), false, MenuCallback, MenuType.Line);
+            if(CurSelectNode.node is BParentNode)
+                menu.AddItem(new GUIContent("Draw Line"), false, MenuCallback, MenuType.Line);
             IsClickedOnNode = false;
         }
         else

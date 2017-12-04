@@ -4,7 +4,6 @@ using UnityEngine;
 using AIBehavior.BaseNode;
 
 public class Idle : Action{
-
     public override void OnStart()
     {
         base.OnStart();

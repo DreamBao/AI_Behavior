@@ -103,6 +103,7 @@
     <Compile Include="Assets\_Script\Decorators\Repeater.cs" />
     <Compile Include="Assets\_Script\EditorWindow\AIBehaviorEditor.cs" />
     <Compile Include="Assets\_Script\Extern\ExternAISource.cs" />
+    <Compile Include="Assets\_Script\Test\TestAssembly.cs" />
     <Compile Include="Assets\_Script\TestAITree.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

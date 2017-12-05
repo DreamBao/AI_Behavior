@@ -154,8 +154,6 @@ public class AIBehaviorEditor : EditorWindow {
             {
                 if(GUI.Button(new Rect(x, y, 240, 20), config.Value.nodeName))
                 {
-
-
                     EditorNodeInfo eni = new EditorNodeInfo();
                     eni.ID = config.Value.ID;
                     eni.NodeName = config.Value.nodeName;

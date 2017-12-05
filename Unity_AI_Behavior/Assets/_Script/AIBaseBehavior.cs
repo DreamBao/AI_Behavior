@@ -28,6 +28,10 @@ public class AIBaseBehavior : MonoBehaviour {
             Debug.Log("Root Start");
             OnAIStart();
         }
+        else
+        {
+            Debug.Log("Root is null");
+        }
 	}
 
     public BNodeStatus OnAIStart()

@@ -8,7 +8,6 @@ public class AISource {
     [SerializeField]
     public List<BNode> SourceNodes = new List<BNode>();
 
-    [SerializeField]
     public RootNode rootNode;
 
     public string JsonData;

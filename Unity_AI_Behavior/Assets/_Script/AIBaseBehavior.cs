@@ -14,7 +14,6 @@ public class AIBaseBehavior : MonoBehaviour {
 
     public AIBehaviorEditor AIEditor;
 
-    [HideInInspector]
     [SerializeField]
     public ExternAISource source;
 
@@ -23,10 +22,13 @@ public class AIBaseBehavior : MonoBehaviour {
 
     // Use this for initialization
     public void Start () {
+        root = aiSource.rootNode;
         if (root != null)
+        {
+            Debug.Log("Root Start");
             OnAIStart();
+        }
 	}
-
 
     public BNodeStatus OnAIStart()
     {

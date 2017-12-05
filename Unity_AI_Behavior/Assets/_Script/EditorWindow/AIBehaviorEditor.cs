@@ -23,9 +23,10 @@ public class EditorNodeInfo
     public Rect windowRect = new Rect(100, 100, 200, 200);
     [SerializeField]
     public List<EditorNodeInfo> childNodes = new List<EditorNodeInfo>();
-
+    [SerializeField]
     public BNode node;
 
+    public RootNode root;
 }
 
 public class AIBehaviorEditor : EditorWindow {
@@ -66,7 +67,7 @@ public class AIBehaviorEditor : EditorWindow {
             Debug.Log("Count : " + source.editorNode.Count);
             LoadNodeData(source.editorNode);
         }
-            
+        
         AIBehaviorEditor editor = (AIBehaviorEditor)AIBehaviorEditor.GetWindow(typeof(AIBehaviorEditor));
         return editor;
     }
@@ -93,7 +94,7 @@ public class AIBehaviorEditor : EditorWindow {
 
     void LoadNodeData(List<EditorNodeInfo> externNode)
     {
-        editorNode.AddRange(externNode);
+        editorNode = externNode;
     }
 
     void OnGUI()
@@ -103,6 +104,7 @@ public class AIBehaviorEditor : EditorWindow {
         
         if(e.button == 1 && e.isMouse && !DrawLineMode)
         {
+            Debug.Log("Click button");
             RefreshSelectedWindow();
             CreateWindowMenu(e);
         }
@@ -113,9 +115,12 @@ public class AIBehaviorEditor : EditorWindow {
             if(IsClickedOnNode && PreDrawNode != null)
             {
                 if(!PreDrawNode.childNodes.Contains(CurSelectNode))
+                {
                     PreDrawNode.childNodes.Add(CurSelectNode);
+                    BParentNode parentNode = PreDrawNode.node as BParentNode;
+                    parentNode.AddChildNode(CurSelectNode.node);
+                }
             }
-
             DrawLineMode = false;
             CurSelectNode = null;
             PreDrawNode = null;
@@ -149,14 +154,30 @@ public class AIBehaviorEditor : EditorWindow {
             {
                 if(GUI.Button(new Rect(x, y, 240, 20), config.Value.nodeName))
                 {
+
+
                     EditorNodeInfo eni = new EditorNodeInfo();
                     eni.ID = config.Value.ID;
                     eni.NodeName = config.Value.nodeName;
                     eni.Descript = config.Value.nodeName;
+                    //Set root when the editor node is null
+                    if (editorNode.Count == 0)
+                    {
+                        EditorNodeInfo root = new EditorNodeInfo();
+                        root.ID = 1;
+                        root.NodeName = "Root";
+                        root.Descript = "RootNode";
+                        editorNode.Add(root);
+                        Owner.aiSource.rootNode = new RootNode();
+                        root.root = Owner.aiSource.rootNode;
+                        root.childNodes.Add(eni);
+                        Owner.aiSource.rootNode.SetStartNode(eni.node);
+                    }
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     Debug.Log("ADD : " + eni.NodeName);
                     eni.node = assembly.CreateInstance(Constant.Name_SPACE + eni.NodeName) as BNode;
                     editorNode.Add(eni);
+                    Owner.aiSource.SourceNodes.Add(eni.node);
                     Owner.source.editorNode = new List<EditorNodeInfo>(editorNode);
                 }
                 y += 20;
@@ -198,8 +219,10 @@ public class AIBehaviorEditor : EditorWindow {
         {
             EditorNodeInfo eNode = editorNode[i];
             eNode.windowRect = GUI.Window(i, editorNode[i].windowRect, DoMyWindow, editorNode[i].NodeName);
+            //Debug.Log("eNode child : " + eNode.childNodes.Count + "   pos " + eNode.windowRect);
             for(int j = 0; j < eNode.childNodes.Count; j ++)
             {
+                //Debug.Log("child enode : " + eNode.childNodes[j].windowRect);
                 DrawBezier(eNode.windowRect, eNode.childNodes[j].windowRect);
             }
         }
@@ -228,9 +251,17 @@ public class AIBehaviorEditor : EditorWindow {
         GenericMenu menu = new GenericMenu();
         if (IsClickedOnNode)
         {
+            Debug.Log("IsClickedOnNode");
             menu.AddItem(new GUIContent("Delete Node"), false, MenuCallback, MenuType.Delete);
             if(CurSelectNode.node is BParentNode)
+            {
+                Debug.Log("is Bparent node");
                 menu.AddItem(new GUIContent("Draw Line"), false, MenuCallback, MenuType.Line);
+            }
+            else
+            {
+                Debug.Log("is not Bparent");
+            }
             IsClickedOnNode = false;
         }
         else

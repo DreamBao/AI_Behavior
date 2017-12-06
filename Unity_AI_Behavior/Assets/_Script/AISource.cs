@@ -9,6 +9,8 @@ public class AISource {
     public List<BNode> SourceNodes = new List<BNode>();
     [SerializeField]
     public RootNode rootNode;
+    [SerializeField]
+    public BehaviorSerializationData serData;
 
-    public string JsonData;
+    public bool IsSerialization = false;
 }

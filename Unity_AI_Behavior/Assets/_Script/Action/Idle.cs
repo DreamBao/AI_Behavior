@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AIBehavior.BaseNode;
-
-public class Idle : Action{
-    public override void OnStart()
+namespace AIBehavior.BaseNode
+{
+    public class Idle : Action
     {
-        base.OnStart();
-        Debug.Log("Idle Start");
-    }
+        public override void OnStart()
+        {
+            base.OnStart();
+            Debug.Log("Idle Start");
+        }
 
-    public override BNodeStatus OnExecute()
-    {
-        Debug.Log("OnExecute Idle");
-        return BNodeStatus.Active;
+        public override BNodeStatus OnExecute()
+        {
+            Debug.Log("OnExecute Idle");
+            return BNodeStatus.Active;
+        }
     }
 }

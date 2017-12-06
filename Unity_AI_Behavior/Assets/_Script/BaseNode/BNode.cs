@@ -12,6 +12,7 @@ namespace AIBehavior.BaseNode
 
         public bool Disabled { get; set; }
         public int ID { get; set; }
+        public string Name { get; set; }
 
         protected BNode()
         {
@@ -71,7 +72,6 @@ namespace AIBehavior.BaseNode
             return BNodeStatus.Inactive;
         }
 
-       
         public virtual void OnPause()
         {
 

@@ -6,6 +6,26 @@ namespace AIBehavior.BaseNode
 {
     public abstract class BParentNode : BNode
     {
+        public List<BNode> CBNodes
+        {
+            get
+            {
+                return this.cBNodes;
+            }
+            private set
+            {
+                this.cBNodes = value;
+            }
+        }
+
+        public int ChildCount
+        {
+            get
+            {
+                return cBNodes.Count;
+            }
+        }
+
         protected List<BNode> cBNodes; //children
 
         protected BParentNode()
@@ -23,10 +43,7 @@ namespace AIBehavior.BaseNode
             cBNodes.Insert(index, child);
         }
 
-        public int ChildCount()
-        {
-            return cBNodes.Count;
-        }
+
 
         public virtual bool CanExecute() { return true; }
 

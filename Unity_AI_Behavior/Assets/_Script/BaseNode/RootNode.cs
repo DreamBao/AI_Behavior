@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace AIBehavior.BaseNode
 {
-    public class RootNode
+    [System.Serializable]
+    public class RootNode : BParentNode
     {
         protected BNode startNode;
 
@@ -15,6 +16,7 @@ namespace AIBehavior.BaseNode
 
         public void SetStartNode(BNode sNode)
         {
+            AddChildNode(sNode);
             startNode = sNode;
         }
 

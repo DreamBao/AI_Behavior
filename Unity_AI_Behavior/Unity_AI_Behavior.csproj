@@ -96,10 +96,12 @@
     <Compile Include="Assets\_Script\BaseNode\RootNode.cs" />
     <Compile Include="Assets\_Script\Common\BaseConfig.cs" />
     <Compile Include="Assets\_Script\Common\Constant.cs" />
+    <Compile Include="Assets\_Script\Common\JsonDataHandle.cs" />
     <Compile Include="Assets\_Script\Common\MiniJSON.cs" />
     <Compile Include="Assets\_Script\Composite\ParallelNode.cs" />
     <Compile Include="Assets\_Script\Composite\SelectorNode.cs" />
     <Compile Include="Assets\_Script\Composite\SequenceNode.cs" />
+    <Compile Include="Assets\_Script\Data\BehaviorSerializationData.cs" />
     <Compile Include="Assets\_Script\Decorators\Repeater.cs" />
     <Compile Include="Assets\_Script\EditorWindow\AIBehaviorEditor.cs" />
     <Compile Include="Assets\_Script\Extern\ExternAISource.cs" />

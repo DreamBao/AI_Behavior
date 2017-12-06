@@ -158,6 +158,13 @@ public class AIBehaviorEditor : EditorWindow {
                     eni.ID = config.Value.ID;
                     eni.NodeName = config.Value.nodeName;
                     eni.Descript = config.Value.nodeName;
+                    Assembly assembly = Assembly.GetExecutingAssembly();
+                    Debug.Log("ADD : " + eni.NodeName);
+                    eni.node = assembly.CreateInstance(Constant.Name_SPACE + eni.NodeName) as BNode;
+                    eni.node.ID = 2;
+                    eni.node.Name = eni.NodeName;
+                    Owner.aiSource.SourceNodes.Add(eni.node);
+                    Owner.source.editorNode = new List<EditorNodeInfo>(editorNode);
                     //Set root when the editor node is null
                     if (editorNode.Count == 0)
                     {
@@ -167,16 +174,14 @@ public class AIBehaviorEditor : EditorWindow {
                         root.Descript = "RootNode";
                         editorNode.Add(root);
                         Owner.aiSource.rootNode = new RootNode();
+                        Owner.aiSource.rootNode.ID = 1;
+                        Owner.aiSource.rootNode.Name = "RootNode";
                         root.root = Owner.aiSource.rootNode;
                         root.childNodes.Add(eni);
                         Owner.aiSource.rootNode.SetStartNode(eni.node);
                     }
-                    Assembly assembly = Assembly.GetExecutingAssembly();
-                    Debug.Log("ADD : " + eni.NodeName);
-                    eni.node = assembly.CreateInstance(Constant.Name_SPACE + eni.NodeName) as BNode;
+
                     editorNode.Add(eni);
-                    Owner.aiSource.SourceNodes.Add(eni.node);
-                    Owner.source.editorNode = new List<EditorNodeInfo>(editorNode);
                 }
                 y += 20;
             }
@@ -185,12 +190,14 @@ public class AIBehaviorEditor : EditorWindow {
         if (GUI.Button(new Rect(x, y, 240, 20), "Export Extern AI"))
         {
             string selectPath = "ExternAIStruct/";
-            string path = EditorUtility.SaveFilePanel("Save Test", selectPath, "Test", "asset");
-            if (string.IsNullOrEmpty(path))
-            {
-                Debug.Log("Save Cancel");
-                return;
-            }
+            //string path = EditorUtility.SaveFilePanel("Save Test", selectPath, "Test", "asset");
+            //if (string.IsNullOrEmpty(path))
+            //{
+            //    Debug.Log("Save Cancel");
+            //    return;
+            //}
+            Owner.aiSource.serData.bJsonData = JsonDataHandle.SerializeData(Owner, Owner.aiSource.rootNode);
+
 
             //path = path.Substring(Application.dataPath.Length - 6);
             //Debug.Log("CreateAinationPath=" + path);

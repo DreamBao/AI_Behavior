@@ -180,32 +180,34 @@ public class AIBehaviorEditor : EditorWindow {
                         root.childNodes.Add(eni);
                         Owner.aiSource.rootNode.SetStartNode(eni.node);
                     }
-
                     editorNode.Add(eni);
                 }
                 y += 20;
             }
 
+        if (GUI.Button(new Rect(x, y, 240, 20), "Save AI"))
+        {
+            Owner.aiSource.serData.bJsonData = JsonDataHandle.SerializeData(Owner, Owner.aiSource.rootNode);
+        }
+        y += 20;
 
         if (GUI.Button(new Rect(x, y, 240, 20), "Export Extern AI"))
         {
             string selectPath = "ExternAIStruct/";
-            //string path = EditorUtility.SaveFilePanel("Save Test", selectPath, "Test", "asset");
-            //if (string.IsNullOrEmpty(path))
-            //{
-            //    Debug.Log("Save Cancel");
-            //    return;
-            //}
+            string path = EditorUtility.SaveFilePanel("Save Test", selectPath, "Test", "asset");
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.Log("Save Cancel");
+                return;
+            }
             Owner.aiSource.serData.bJsonData = JsonDataHandle.SerializeData(Owner, Owner.aiSource.rootNode);
-
-
-            //path = path.Substring(Application.dataPath.Length - 6);
-            //Debug.Log("CreateAinationPath=" + path);
-            //ExternAISource source = ScriptableObject.CreateInstance<ExternAISource>();
-            //source.editorNode.AddRange(editorNode);
-            //Debug.Log("source Node=" + source.editorNode.Count);
-            //AssetDatabase.CreateAsset(source, path);
-            //AssetDatabase.ImportAsset(path);
+            path = path.Substring(Application.dataPath.Length - 6);
+            Debug.Log("CreateAinationPath=" + path);
+            ExternAISource source = ScriptableObject.CreateInstance<ExternAISource>();
+            source.editorNode.AddRange(editorNode);
+            Debug.Log("source Node=" + source.editorNode.Count);
+            AssetDatabase.CreateAsset(source, path);
+            AssetDatabase.ImportAsset(path);
         }
         y += 20;
 
@@ -246,6 +248,7 @@ public class AIBehaviorEditor : EditorWindow {
         for (int i = 0; i < 5; i++)
         {
             Handles.DrawBezier(startPos, endPos, startTan, endTan, shadow, null, 1 + (i * 2));
+            //Handles.DrawLine
         }
         Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 1);
     }

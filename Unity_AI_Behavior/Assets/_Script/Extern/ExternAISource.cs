@@ -3,7 +3,7 @@ using UnityEngine;
 using AIBehavior.BaseNode;
 
 [System.Serializable]
-public class ExternAISource
+public class ExternAISource:ScriptableObject
 {
     [SerializeField]
     public List<EditorNodeInfo> editorNode = new List<EditorNodeInfo>();

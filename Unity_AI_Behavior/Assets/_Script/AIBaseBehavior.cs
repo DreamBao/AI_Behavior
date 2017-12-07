@@ -22,6 +22,9 @@ public class AIBaseBehavior : MonoBehaviour {
 
     // Use this for initialization
     public void Start () {
+
+        JsonDataHandle.LoadSerializeData(this, aiSource.serData.bJsonData);
+
         root = aiSource.rootNode;
         if (root != null)
         {

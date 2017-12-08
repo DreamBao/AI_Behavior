@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AIBehavior.BaseNode;
-namespace AIBehavior.BaseNode
+namespace AIBehavior.BaseNode.ActionNode
 {
     public class Idle : Action
     {

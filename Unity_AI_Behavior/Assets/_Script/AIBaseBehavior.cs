@@ -12,8 +12,9 @@ public class AIBaseBehavior : MonoBehaviour {
 
     public RootNode root;
 
-    public AIBehaviorEditor AIEditor;
+    private AIBehaviorEditor AIEditor;
 
+    [HideInInspector]
     [SerializeField]
     public ExternAISource source;
 
@@ -22,9 +23,7 @@ public class AIBaseBehavior : MonoBehaviour {
 
     // Use this for initialization
     public void Start () {
-
         JsonDataHandle.LoadSerializeData(this, aiSource.serData.bJsonData);
-
         root = aiSource.rootNode;
         if (root != null)
         {

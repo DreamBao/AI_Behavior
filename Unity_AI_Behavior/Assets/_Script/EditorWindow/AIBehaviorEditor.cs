@@ -58,6 +58,7 @@ public class AIBehaviorEditor : EditorWindow {
         InitBinding();
         LoadConfigData();
         Owner = behavior;
+        Debug.Log("Editor count : " + editorNode.Count);
         ExternAISource source = null;
         if (behavior != null)
             source = behavior.source;
@@ -159,12 +160,10 @@ public class AIBehaviorEditor : EditorWindow {
                     eni.NodeName = config.Value.nodeName;
                     eni.Descript = config.Value.nodeName;
                     Assembly assembly = Assembly.GetExecutingAssembly();
-                    Debug.Log("ADD : " + eni.NodeName);
                     eni.node = assembly.CreateInstance(Constant.Name_SPACE + eni.NodeName) as BNode;
                     eni.node.ID = 2;
                     eni.node.Name = eni.NodeName;
                     Owner.aiSource.SourceNodes.Add(eni.node);
-                    Owner.source.editorNode = new List<EditorNodeInfo>(editorNode);
                     //Set root when the editor node is null
                     if (editorNode.Count == 0)
                     {
@@ -181,6 +180,8 @@ public class AIBehaviorEditor : EditorWindow {
                         Owner.aiSource.rootNode.SetStartNode(eni.node);
                     }
                     editorNode.Add(eni);
+                    Owner.source.editorNode = new List<EditorNodeInfo>(editorNode);
+                    Debug.Log("ADD : " + eni.NodeName + " count : " + editorNode.Count);
                 }
                 y += 20;
             }
@@ -244,13 +245,14 @@ public class AIBehaviorEditor : EditorWindow {
         Vector3 startTan = startPos + Vector3.right * 50;
         Vector3 endTan = endPos + Vector3.left * 50;
         Color shadow = new Color(0, 0, 0, 0.7f);
-
-        for (int i = 0; i < 5; i++)
-        {
-            Handles.DrawBezier(startPos, endPos, startTan, endTan, shadow, null, 1 + (i * 2));
-            //Handles.DrawLine
-        }
-        Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 1);
+        Handles.DrawAAPolyLine(new Vector3[] { startPos, endPos });
+        //Handles.DrawLine(startPos, endPos);
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    //Handles.DrawBezier(startPos, endPos, startTan, endTan, shadow, null, 1 + (i * 2));
+        //    Handles.DrawLine(startPos, endPos);
+        //}
+        //Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 1);
     }
 
 
